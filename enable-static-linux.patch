@@ -1,0 +1,49 @@
+# HG changeset patch
+# User ex
+# Date 1486557377 0
+#      Wed Feb 08 12:36:17 2017 +0000
+# Node ID a2c225f775c14737093eb54de11294a65b6687b8
+# Parent  e338abeb33a3862c175e22389515e7ab5d909bc1
+Fix build with new gcc
+
+diff -r e338abeb33a3 -r a2c225f775c1 common/autoconf/generated-configure.sh
+--- a/common/autoconf/generated-configure.sh	Thu Feb 02 21:20:36 2017 +0000
++++ b/common/autoconf/generated-configure.sh	Wed Feb 08 12:36:17 2017 +0000
+@@ -5180,7 +5180,7 @@
+ #CUSTOM_AUTOCONF_INCLUDE
+ 
+ # Do not change or remove the following line, it is needed for consistency checks:
+-DATE_WHEN_GENERATED=1485508515
++DATE_WHEN_GENERATED=1486552977
+ 
+ ###############################################################################
+ #
+@@ -31317,9 +31317,9 @@
+ $as_echo_n "checking if static build is enabled... " >&6; }
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+ $as_echo "yes" >&6; }
+-    if test "x$OPENJDK_TARGET_OS" != "xmacosx"; then
+-      as_fn_error $? "--enable-static-build is only supported for macosx builds" "$LINENO" 5
+-    fi
++    # if test "x$OPENJDK_TARGET_OS" != "xmacosx"; then
++    #   AC_MSG_ERROR([--enable-static-build is only supported for macosx builds])
++    # fi
+     STATIC_BUILD_CFLAGS="-DSTATIC_BUILD=1"
+     CFLAGS_JDKLIB_EXTRA="$CFLAGS_JDKLIB_EXTRA $STATIC_BUILD_CFLAGS"
+     CXXFLAGS_JDKLIB_EXTRA="$CXXFLAGS_JDKLIB_EXTRA $STATIC_BUILD_CFLAGS"
+diff -r e338abeb33a3 -r a2c225f775c1 common/autoconf/jdk-options.m4
+--- a/common/autoconf/jdk-options.m4	Thu Feb 02 21:20:36 2017 +0000
++++ b/common/autoconf/jdk-options.m4	Wed Feb 08 12:36:17 2017 +0000
+@@ -355,9 +355,9 @@
+   if test "x$enable_static_build" = "xyes"; then
+     AC_MSG_CHECKING([if static build is enabled])
+     AC_MSG_RESULT([yes])
+-    if test "x$OPENJDK_TARGET_OS" != "xmacosx"; then
+-      AC_MSG_ERROR([--enable-static-build is only supported for macosx builds])
+-    fi
++    # if test "x$OPENJDK_TARGET_OS" != "xmacosx"; then
++    #   AC_MSG_ERROR([--enable-static-build is only supported for macosx builds])
++    # fi
+     STATIC_BUILD_CFLAGS="-DSTATIC_BUILD=1"
+     CFLAGS_JDKLIB_EXTRA="$CFLAGS_JDKLIB_EXTRA $STATIC_BUILD_CFLAGS"
+     CXXFLAGS_JDKLIB_EXTRA="$CXXFLAGS_JDKLIB_EXTRA $STATIC_BUILD_CFLAGS"

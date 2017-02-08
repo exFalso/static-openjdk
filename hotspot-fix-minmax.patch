@@ -1,0 +1,782 @@
+# HG changeset patch
+# User ex
+# Date 1486557501 0
+#      Wed Feb 08 12:38:21 2017 +0000
+# Node ID 3e4ad45356bcd5fd3b04fff28892cf6443d0fb5c
+# Parent  23667c4b2f0e848cad6bd3ef057d54eeb022a52a
+Fix #define min()/max() clash problem
+
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/classfile/test_AltHashing.cpp
+--- a/test/native/classfile/test_AltHashing.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/classfile/test_AltHashing.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -20,9 +20,9 @@
+  * or visit www.oracle.com if you need additional information or have any
+  * questions.
+  */
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "classfile/altHashing.hpp"
+-#include "unittest.hpp"
+ 
+ // Internal test for alternate hashing.  Translated from JDK version
+ // test/sun/misc/Hashing.java
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/classfile/test_symbolTable.cpp
+--- a/test/native/classfile/test_symbolTable.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/classfile/test_symbolTable.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,10 +21,10 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "runtime/interfaceSupport.hpp"
+ #include "classfile/symbolTable.hpp"
+-#include "unittest.hpp"
+ 
+ TEST_VM(SymbolTable, temp_new_symbol) {
+   // Assert messages assume these symbols are unique, and the refcounts start at
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/code/test_dependencyContext.cpp
+--- a/test/native/code/test_dependencyContext.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/code/test_dependencyContext.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -22,9 +22,9 @@
+  *
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "code/dependencyContext.hpp"
+-#include "unittest.hpp"
+ 
+ class TestDependencyContext {
+  public:
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/g1/test_bufferingOopClosure.cpp
+--- a/test/native/gc/g1/test_bufferingOopClosure.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/g1/test_bufferingOopClosure.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,10 +21,10 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/g1/bufferingOopClosure.hpp"
+ #include "memory/iterator.hpp"
+-#include "unittest.hpp"
+ 
+ class BufferingOopClosureTest : public ::testing::Test {
+  public:
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/g1/test_freeRegionList.cpp
+--- a/test/native/gc/g1/test_freeRegionList.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/g1/test_freeRegionList.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/g1/g1CollectedHeap.inline.hpp"
+-#include "unittest.hpp"
+ 
+ // @requires UseG1GC
+ TEST_VM(FreeRegionList, length) {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/g1/test_g1BiasedArray.cpp
+--- a/test/native/gc/g1/test_g1BiasedArray.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/g1/test_g1BiasedArray.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/g1/g1BiasedArray.hpp"
+-#include "unittest.hpp"
+ 
+ class TestMappedArray : public G1BiasedMappedArray<int> {
+ public:
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/g1/test_g1CodeCacheRemSet.cpp
+--- a/test/native/gc/g1/test_g1CodeCacheRemSet.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/g1/test_g1CodeCacheRemSet.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,10 +21,10 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/g1/g1CodeRootSetTable.hpp"
+ #include "gc/g1/g1CodeCacheRemSet.hpp"
+-#include "unittest.hpp"
+ 
+ class G1CodeRootSetTest : public ::testing::Test {
+  public:
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/g1/test_g1IHOPControl.cpp
+--- a/test/native/gc/g1/test_g1IHOPControl.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/g1/test_g1IHOPControl.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,11 +21,11 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/g1/g1CollectedHeap.inline.hpp"
+ #include "gc/g1/g1IHOPControl.hpp"
+ #include "gc/g1/g1Predictions.hpp"
+-#include "unittest.hpp"
+ 
+ static void test_update(G1IHOPControl* ctrl, double alloc_time,
+                         size_t alloc_amount, size_t young_size,
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/g1/test_g1Predictions.cpp
+--- a/test/native/gc/g1/test_g1Predictions.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/g1/test_g1Predictions.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -22,9 +22,9 @@
+  *
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/g1/g1Predictions.hpp"
+-#include "unittest.hpp"
+ 
+ static const double epsilon = 1e-6;
+ 
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/g1/test_workerDataArray.cpp
+--- a/test/native/gc/g1/test_workerDataArray.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/g1/test_workerDataArray.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,10 +21,10 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/g1/workerDataArray.inline.hpp"
+ #include "memory/resourceArea.hpp"
+-#include "unittest.hpp"
+ #include "utilities/ostream.hpp"
+ 
+ static const double epsilon = 0.0001;
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/parallel/test_psAdaptiveSizePolicy.cpp
+--- a/test/native/gc/parallel/test_psAdaptiveSizePolicy.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/parallel/test_psAdaptiveSizePolicy.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -22,10 +22,10 @@
+  *
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "utilities/macros.hpp"
+ #include "gc/parallel/psAdaptiveSizePolicy.hpp"
+-#include "unittest.hpp"
+ 
+ #if INCLUDE_ALL_GCS
+ 
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/parallel/test_psParallelCompact.cpp
+--- a/test/native/gc/parallel/test_psParallelCompact.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/parallel/test_psParallelCompact.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,10 +21,10 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/parallel/psParallelCompact.hpp"
+ #include "gc/parallel/psCompactionManager.inline.hpp"
+-#include "unittest.hpp"
+ 
+ #ifndef PRODUCT
+ 
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/shared/test_collectedHeap.cpp
+--- a/test/native/gc/shared/test_collectedHeap.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/shared/test_collectedHeap.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/shared/collectedHeap.hpp"
+-#include "unittest.hpp"
+ 
+ TEST_VM(CollectedHeap, is_in) {
+   CollectedHeap* heap = Universe::heap();
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/shared/test_collectorPolicy.cpp
+--- a/test/native/gc/shared/test_collectorPolicy.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/shared/test_collectorPolicy.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/shared/collectorPolicy.hpp"
+-#include "unittest.hpp"
+ #include "utilities/macros.hpp"
+ 
+ class TestGenCollectorPolicy {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/gc/shared/test_memset_with_concurrent_readers.cpp
+--- a/test/native/gc/shared/test_memset_with_concurrent_readers.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/gc/shared/test_memset_with_concurrent_readers.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,12 +21,12 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include <string.h>
+ #include "utilities/globalDefinitions.hpp"
+ #include <sstream>
+ #include "gc/shared/memset_with_concurrent_readers.hpp"
+-#include "unittest.hpp"
+ 
+ #if INCLUDE_ALL_GCS
+ 
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/logTestFixture.cpp
+--- a/test/native/logging/logTestFixture.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/logTestFixture.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,12 +21,12 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logTestFixture.hpp"
+ #include "logTestUtils.inline.hpp"
+ #include "logging/logConfiguration.hpp"
+ #include "memory/resourceArea.hpp"
+-#include "unittest.hpp"
+ #include "utilities/ostream.hpp"
+ 
+ LogTestFixture::LogTestFixture() {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_gcTraceTime.cpp
+--- a/test/native/logging/test_gcTraceTime.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_gcTraceTime.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,13 +21,13 @@
+  * questions.
+  *
+  */
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/shared/gcTraceTime.inline.hpp"
+ #include "logTestFixture.hpp"
+ #include "logTestUtils.inline.hpp"
+ #include "logging/log.hpp"
+ #include "runtime/interfaceSupport.hpp"
+-#include "unittest.hpp"
+ 
+ class GCTraceTimeTest : public LogTestFixture {
+ };
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_log.cpp
+--- a/test/native/logging/test_log.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_log.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,12 +21,12 @@
+  * questions.
+  *
+  */
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "gc/shared/gcTraceTime.inline.hpp"
+ #include "logTestFixture.hpp"
+ #include "logTestUtils.inline.hpp"
+ #include "logging/log.hpp"
+-#include "unittest.hpp"
+ 
+ class LogTest : public LogTestFixture {
+ };
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logConfiguration.cpp
+--- a/test/native/logging/test_logConfiguration.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logConfiguration.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,6 +21,7 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logTestFixture.hpp"
+ #include "logTestUtils.inline.hpp"
+@@ -31,7 +32,6 @@
+ #include "logging/logTag.hpp"
+ #include "logging/logTagSet.hpp"
+ #include "memory/resourceArea.hpp"
+-#include "unittest.hpp"
+ #include "utilities/ostream.hpp"
+ 
+ class LogConfigurationTest : public LogTestFixture {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logDecorations.cpp
+--- a/test/native/logging/test_logDecorations.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logDecorations.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,11 +21,11 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logging/logDecorations.hpp"
+ #include "logging/logTagSet.hpp"
+ #include "runtime/os.hpp"
+-#include "unittest.hpp"
+ #include "utilities/globalDefinitions.hpp"
+ 
+ static const LogTagSet& tagset = LogTagSetMapping<LOG_TAGS(logging, safepoint)>::tagset();
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logDecorators.cpp
+--- a/test/native/logging/test_logDecorators.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logDecorators.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logging/logDecorators.hpp"
+-#include "unittest.hpp"
+ 
+ static LogDecorators::Decorator decorator_array[] = {
+ #define DECORATOR(name, abbr) LogDecorators::name##_decorator,
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logFileOutput.cpp
+--- a/test/native/logging/test_logFileOutput.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logFileOutput.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,12 +21,12 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logTestUtils.inline.hpp"
+ #include "logging/logFileOutput.hpp"
+ #include "memory/resourceArea.hpp"
+ #include "runtime/os.hpp"
+-#include "unittest.hpp"
+ #include "utilities/globalDefinitions.hpp"
+ #include "utilities/ostream.hpp"
+ 
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logLevel.cpp
+--- a/test/native/logging/test_logLevel.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logLevel.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logging/logLevel.hpp"
+-#include "unittest.hpp"
+ 
+ TEST(LogLevel, from_string) {
+   LogLevelType level;
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logMessageTest.cpp
+--- a/test/native/logging/test_logMessageTest.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logMessageTest.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,12 +21,12 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logTestFixture.hpp"
+ #include "logTestUtils.inline.hpp"
+ #include "logging/log.hpp"
+ #include "logging/logMessage.hpp"
+-#include "unittest.hpp"
+ #include "utilities/globalDefinitions.hpp"
+ 
+ class LogMessageTest : public LogTestFixture {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logOutputList.cpp
+--- a/test/native/logging/test_logOutputList.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logOutputList.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,13 +21,13 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logging/logFileStreamOutput.hpp"
+ #include "logging/logLevel.hpp"
+ #include "logging/logOutput.hpp"
+ #include "logging/logOutputList.hpp"
+ #include "runtime/os.hpp"
+-#include "unittest.hpp"
+ 
+ // Count the outputs in the given list, starting from the specified level
+ static size_t output_count(LogOutputList* list, LogLevelType from = LogLevel::Error)  {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logStream.cpp
+--- a/test/native/logging/test_logStream.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logStream.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,12 +21,12 @@
+  * questions.
+  *
+  */
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logTestFixture.hpp"
+ #include "logTestUtils.inline.hpp"
+ #include "logging/log.hpp"
+ #include "logging/logStream.hpp"
+-#include "unittest.hpp"
+ 
+ class LogStreamTest : public LogTestFixture {
+  protected:
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logTag.cpp
+--- a/test/native/logging/test_logTag.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logTag.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logging/logTag.hpp"
+-#include "unittest.hpp"
+ 
+ TEST(LogTag, from_string) {
+   // Verify for all tags defined in LOG_TAG_LIST
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logTagLevelExpression.cpp
+--- a/test/native/logging/test_logTagLevelExpression.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logTagLevelExpression.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,11 +21,11 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logging/logLevel.hpp"
+ #include "logging/logTagLevelExpression.hpp"
+ #include "logging/logTagSet.hpp"
+-#include "unittest.hpp"
+ #include "utilities/globalDefinitions.hpp"
+ 
+ TEST(LogTagLevelExpression, combination_limit) {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logTagSet.cpp
+--- a/test/native/logging/test_logTagSet.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logTagSet.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,13 +21,13 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logging/logFileStreamOutput.hpp"
+ #include "logging/logLevel.hpp"
+ #include "logging/logOutput.hpp"
+ #include "logging/logTag.hpp"
+ #include "logging/logTagSet.hpp"
+-#include "unittest.hpp"
+ 
+ // Test the default level for each tagset
+ TEST(LogTagSet, defaults) {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/logging/test_logTagSetDescriptions.cpp
+--- a/test/native/logging/test_logTagSetDescriptions.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/logging/test_logTagSetDescriptions.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,13 +21,13 @@
+  * questions.
+  *
+  */
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "logTestUtils.inline.hpp"
+ #include "logging/logConfiguration.hpp"
+ #include "logging/logTagSet.hpp"
+ #include "logging/logTagSetDescriptions.hpp"
+ #include "memory/resourceArea.hpp"
+-#include "unittest.hpp"
+ #include "utilities/ostream.hpp"
+ 
+ TEST(LogTagSetDescriptions, describe) {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/memory/test_chunkManager.cpp
+--- a/test/native/memory/test_chunkManager.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/memory/test_chunkManager.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,12 +21,12 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ 
+ // The test function is only available in debug builds
+ #ifdef ASSERT
+ 
+-#include "unittest.hpp"
+ 
+ void ChunkManager_test_list_index();
+ 
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/memory/test_guardedMemory.cpp
+--- a/test/native/memory/test_guardedMemory.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/memory/test_guardedMemory.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,12 +21,12 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "memory/allocation.hpp"
+ #include "memory/allocation.inline.hpp"
+ #include "memory/guardedMemory.hpp"
+ #include "runtime/os.hpp"
+-#include "unittest.hpp"
+ 
+ static void guarded_memory_test_check(void* p, size_t sz, void* tag) {
+   ASSERT_TRUE(p != NULL) << "NULL pointer given to check";
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/memory/test_metachunk.cpp
+--- a/test/native/memory/test_metachunk.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/memory/test_metachunk.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,10 +21,10 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "memory/allocation.hpp"
+ #include "memory/metachunk.hpp"
+-#include "unittest.hpp"
+ #include "utilities/copy.hpp"
+ #include "utilities/debug.hpp"
+ 
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/memory/test_spaceManager.cpp
+--- a/test/native/memory/test_spaceManager.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/memory/test_spaceManager.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,12 +21,12 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ 
+ // The test function is only available in debug builds
+ #ifdef ASSERT
+ 
+-#include "unittest.hpp"
+ 
+ void SpaceManager_test_adjust_initial_chunk_size();
+ 
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/oops/test_arrayOop.cpp
+--- a/test/native/oops/test_arrayOop.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/oops/test_arrayOop.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,10 +21,10 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "oops/arrayOop.hpp"
+ #include "oops/oop.inline.hpp"
+-#include "unittest.hpp"
+ #include "utilities/globalDefinitions.hpp"
+ 
+ class arrayOopDescTest {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/oops/test_instanceKlass.cpp
+--- a/test/native/oops/test_instanceKlass.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/oops/test_instanceKlass.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,12 +21,12 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "classfile/symbolTable.hpp"
+ #include "classfile/systemDictionary.hpp"
+ #include "memory/resourceArea.hpp"
+ #include "oops/instanceKlass.hpp"
+-#include "unittest.hpp"
+ 
+ // Tests InstanceKlass::package_from_name()
+ TEST_VM(InstanceKlass, null_symbol) {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/runtime/test_arguments.cpp
+--- a/test/native/runtime/test_arguments.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/runtime/test_arguments.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "runtime/arguments.hpp"
+-#include "unittest.hpp"
+ #include "utilities/globalDefinitions.hpp"
+ 
+ TEST(arguments, atojulong) {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/runtime/test_classLoader.cpp
+--- a/test/native/runtime/test_classLoader.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/runtime/test_classLoader.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,10 +21,10 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "classfile/classLoader.hpp"
+ #include "memory/resourceArea.hpp"
+-#include "unittest.hpp"
+ 
+ // Tests ClassLoader::package_from_name()
+ TEST_VM(classLoader, null_class_name) {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/runtime/test_globals.cpp
+--- a/test/native/runtime/test_globals.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/runtime/test_globals.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "runtime/globals.hpp"
+-#include "unittest.hpp"
+ 
+ #define TEST_FLAG(f, type, value)                     \
+   do {                                                \
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/runtime/test_os.cpp
+--- a/test/native/runtime/test_os.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/runtime/test_os.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "runtime/os.hpp"
+-#include "unittest.hpp"
+ 
+ static size_t small_page_size() {
+   return os::vm_page_size();
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/runtime/test_semaphore.cpp
+--- a/test/native/runtime/test_semaphore.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/runtime/test_semaphore.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "runtime/semaphore.hpp"
+-#include "unittest.hpp"
+ 
+ static void test_semaphore_single_separate(uint count) {
+   Semaphore sem(0);
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/utilities/test_bitMap.cpp
+--- a/test/native/utilities/test_bitMap.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/utilities/test_bitMap.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,10 +21,10 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "memory/resourceArea.hpp"
+ #include "utilities/bitMap.inline.hpp"
+-#include "unittest.hpp"
+ 
+ class BitMapTest {
+ 
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/utilities/test_bitMap_setops.cpp
+--- a/test/native/utilities/test_bitMap_setops.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/utilities/test_bitMap_setops.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,13 +21,13 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "utilities/bitMap.inline.hpp"
+ #include "utilities/copy.hpp"
+ #include "utilities/debug.hpp"
+ #include "utilities/globalDefinitions.hpp"
+ #include <stdlib.h>
+-#include "unittest.hpp"
+ 
+ typedef BitMap::idx_t idx_t;
+ typedef BitMap::bm_word_t bm_word_t;
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/utilities/test_chunkedList.cpp
+--- a/test/native/utilities/test_chunkedList.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/utilities/test_chunkedList.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,8 +21,8 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+-#include "unittest.hpp"
+ #include "utilities/chunkedList.hpp"
+ 
+ class Metadata;
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/utilities/test_globalDefinitions.cpp
+--- a/test/native/utilities/test_globalDefinitions.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/utilities/test_globalDefinitions.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "runtime/os.hpp"
+-#include "unittest.hpp"
+ #include "utilities/globalDefinitions.hpp"
+ 
+ static ::testing::AssertionResult testPageAddress(
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/utilities/test_json.cpp
+--- a/test/native/utilities/test_json.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/utilities/test_json.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,11 +21,11 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "memory/resourceArea.hpp"
+ #include "prims/jvm.h"
+ #include "utilities/json.hpp"
+-#include "unittest.hpp"
+ 
+ class JSON_GTest : public JSON {
+  public:
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/utilities/test_linkedlist.cpp
+--- a/test/native/utilities/test_linkedlist.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/utilities/test_linkedlist.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -22,8 +22,8 @@
+ 
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+-#include "unittest.hpp"
+ #include "utilities/linkedlist.hpp"
+ 
+ class Integer : public StackObj {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/utilities/test_quicksort.cpp
+--- a/test/native/utilities/test_quicksort.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/utilities/test_quicksort.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -22,11 +22,11 @@
+  *
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "memory/allocation.inline.hpp"
+ #include "runtime/os.hpp"
+ #include "utilities/quickSort.hpp"
+-#include "unittest.hpp"
+ 
+ static int test_comparator(int a, int b) {
+   if (a == b) {
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/utilities/test_resourceHash.cpp
+--- a/test/native/utilities/test_resourceHash.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/utilities/test_resourceHash.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,10 +21,10 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "memory/allocation.hpp"
+ #include "memory/resourceArea.hpp"
+-#include "unittest.hpp"
+ #include "utilities/debug.hpp"
+ #include "utilities/resourceHash.hpp"
+ 
+diff -r 23667c4b2f0e -r 3e4ad45356bc test/native/utilities/test_utf8.cpp
+--- a/test/native/utilities/test_utf8.cpp	Thu Feb 02 21:20:37 2017 +0000
++++ b/test/native/utilities/test_utf8.cpp	Wed Feb 08 12:38:21 2017 +0000
+@@ -21,9 +21,9 @@
+  * questions.
+  */
+ 
++#include "unittest.hpp"
+ #include "precompiled.hpp"
+ #include "utilities/utf8.hpp"
+-#include "unittest.hpp"
+ 
+ TEST(utf8, length) {
+   char res[60];
